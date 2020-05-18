@@ -3,6 +3,17 @@ import { View, Text } from '@tarojs/components'
 import './index.less'
 
 export default class Index extends Component {
+  constructor(props) {
+    super(props)
+    this.config = {
+        navigationBarTitleText: '首页',
+        // navigationBarTextStyle: "white",
+        // navigationBarBackgroundColor: "#FF9F00"
+    }
+    this.state = {
+       
+    } 
+  }
 
   componentWillMount () { }
 
@@ -14,9 +25,6 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
-  config = {
-    navigationBarTitleText: '首页'
-  }
 
   render () {
     return (

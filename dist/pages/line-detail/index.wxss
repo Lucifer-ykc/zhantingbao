@@ -1,0 +1,60 @@
+.page-bkg .line-info {
+  background: #389cff;
+  height: 156rpx;
+  width: 100%;
+  color: #fff;
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+}
+.page-bkg .line-info .title {
+  font-size: 48rpx;
+  line-height: 48rpx;
+}
+.page-bkg .line-info .title::after {
+  content: '路';
+  margin-left: 10rpx;
+  background: #2d90f2;
+  font-size: 28rpx;
+  height: 32rpx;
+  width: 60rpx;
+  display: inline-block;
+  text-align: center;
+  line-height: 32rpx;
+}
+.page-bkg .line-info .line-detail {
+  margin-top: 15rpx;
+  font-size: 36rpx;
+}
+.page-bkg .line-info .time-price {
+  margin-top: 10rpx;
+  display: flex;
+  align-items: center;
+}
+.page-bkg .line-info .time-price Text {
+  margin-right: 35rpx;
+}
+.page-bkg .line-info .time-price Text:nth-child(2) {
+  font-size: 20rpx;
+  line-height: 30rpx;
+}
+.page-bkg .stop-info {
+  height: 240rpx;
+  width: 702rpx;
+  border-radius: 10rpx;
+  background: #fff;
+  margin: 24rpx;
+  position: relative;
+  box-shadow: 0 8rpx 10rpx 0 rgba(0, 0, 0, 0.1);
+}
+.page-bkg .stop-info .arrow {
+  background: #fff;
+  bottom: -10rpx;
+  left: 330rpx;
+  position: absolute;
+  height: 20rpx;
+  width: 20rpx;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  box-shadow: 8rpx 8rpx 8rpx 0 rgba(0, 0, 0, 0.1);
+}

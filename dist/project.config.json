@@ -2,12 +2,16 @@
   "miniprogramRoot": "./",
   "projectname": "zhantingbao",
   "description": "zhantingbao",
-  "appid": "touristappid",
+  "appid": "wx10bc4c05c182865d",
   "setting": {
     "urlCheck": true,
     "es6": false,
     "postcss": false,
-    "minified": false
+    "minified": false,
+    "checkSiteMap": false
   },
-  "compileType": "miniprogram"
+  "compileType": "miniprogram",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {}
 }
