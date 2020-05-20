@@ -3,9 +3,9 @@ const config = {
   date: '2020-5-13',
   designWidth: 750,
   deviceRatio: {
-    '640': 2.34 / 2,
-    '750': 1,
-    '828': 1.81 / 2
+    640: 2.34 / 2,
+    750: 1,
+    828: 1.81 / 2
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
@@ -21,10 +21,10 @@ const config = {
       'transform-class-properties',
       'transform-object-rest-spread',
       ['transform-runtime', {
-        'helpers': false,
-        'polyfill': false,
-        'regenerator': true,
-        'moduleName': 'babel-runtime'
+        helpers: false,
+        polyfill: false,
+        regenerator: true,
+        moduleName: 'babel-runtime'
       }]
     ]
   },
@@ -75,11 +75,11 @@ const config = {
       }
     }
   }
-}
+};
 
 module.exports = function (merge) {
   if (process.env.NODE_ENV === 'development') {
-    return merge({}, config, require('./dev'))
+    return merge({}, config, require('./dev'));
   }
-  return merge({}, config, require('./prod'))
-}
+  return merge({}, config, require('./prod'));
+};

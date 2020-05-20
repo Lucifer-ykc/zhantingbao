@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components';
 import './index.less';
+import lineJson from '../components/stops.json';
 
 export default class Index extends Component {
   constructor(props) {
@@ -15,21 +16,38 @@ export default class Index extends Component {
     };
   }
 
-  componentWillMount() { }
+  componentWillMount() {
 
-  componentDidMount() { }
+  }
 
-  componentWillUnmount() { }
+  componentDidMount() {
+
+  }
+
+  componentWillUnmount() {
+
+  }
 
   componentDidShow() {
-
+    console.log(lineJson);
   }
 
   componentDidHide() { }
 
 
   randerLine() {
-
+    return (
+      <View className="stop-one">
+        <View className="road-arrow" />
+        <View className="left-road" />
+        <View className="stop-obj">
+          <View className="road-stop" />
+          <View className="stop-num">1</View>
+          <View className="stop-name">大大小小</View>
+        </View>
+        <View className="right-road" />
+      </View>
+    );
   }
 
   render() {
@@ -50,7 +68,7 @@ export default class Index extends Component {
         </View>
         <View className="pic-aura">
           <ScrollView>
-            <View>1</View>
+            {linePic}
           </ScrollView>
         </View>
       </View>
