@@ -61,6 +61,12 @@
   .pic-aura{
     background-color: #fff;
     margin:0 24px;
+    .all-stops{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
     .stop-one{
       display: flex;
       flex-direction: row;
@@ -87,7 +93,7 @@
         background-image: url("../../images/road_arrow.png");
       }
       .road-stop{
-        width: 32px;
+
         background-repeat: no-repeat;
         background-position: center;
         background-image: url("../../images/stop_dot.png");
@@ -100,10 +106,13 @@
         align-items: center;
         .stop-num,.stop-name{
           margin: 15px auto;
-          width: 32px;
           font-size: 32px;
-          line-height: 40px;
+          line-height:32px;
           text-align: center;
+        }
+        .stop-name{
+          letter-spacing: 4px;
+          writing-mode: vertical-lr;
         }
       }
     }
