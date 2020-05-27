@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components';
 import './index.less';
 import lineJson from '../components/stops.json';
+import moment from 'moment';
 
 export default class Index extends Component {
   constructor(props) {
@@ -12,7 +13,12 @@ export default class Index extends Component {
       // navigationBarBackgroundColor: "#FF9F00"
     };
     this.state = {
+      lineId: 767,
+      lineType: 'a',
       lineInfo: lineJson['767'].a,
+      selectedStop: 0,
+      arrLeft: 33,
+      windowWidth: 375,
       metroColor: {
         1: "#CC0000",
         2: "#009900",
@@ -31,8 +37,17 @@ export default class Index extends Component {
         15: "#B3B3B3",
         16: "#77C8C7",
         17: "#c07774",
+      },
+      nowStopPeople: 10,
+      nowBus: 0,
+      nowBusLeft: 0,
+      stopInfo: {
+        time: 0,
+        stops: 0,
+        road: 0
       }
     };
+    this.intervalBus;
   }
 
   componentWillMount() {
@@ -48,24 +63,96 @@ export default class Index extends Component {
   }
 
   componentDidShow() {
-
+    const self = this;
+    Taro.getSystemInfo({
+      success: (res) => {
+        self.setState({
+          windowWidth: res.windowWidth,
+        });
+      }
+    });
+    this.busLocation();
+    this.intervalBus = setInterval(() => {
+      this.busLocation();
+    }, 60000);
   }
 
-  componentDidHide() { }
+  componentDidHide() {
+    clearInterval(this.intervalBus);
+  }
 
+  changeType() {
+    const { lineId, lineType } = this.state;
+    if (lineType == 'a') {
+      this.setState({
+        lineType: 'b',
+        lineInfo: lineJson[lineId].b,
+      });
+    } else {
+      this.setState({
+        lineType: 'a',
+        lineInfo: lineJson[lineId].a,
+      });
+    }
+  }
+
+  selectStop=(num) => {
+    const { picLeft, windowWidth, nowBus } = this.state;
+    const stepWidth = windowWidth > 414 ? 66 * windowWidth / 375 : windowWidth > 375 ? 70 : windowWidth > 320 ? 66 : 55;
+    const newLeft = picLeft == (num - 2) * stepWidth ? ((num - 2) * stepWidth - 1) : ((num - 2) * stepWidth);
+    const stopInfo = {
+      time: num * 3 - moment(new Date()).format('mm'),
+      stops: num - Math.floor(nowBus / 2),
+      road: (num * 2 - nowBus) * (200 + Math.round(Math.random() * 50))
+    };
+    this.setState({
+      selectedStop: num,
+      picLeft: newLeft,
+      arrLeft: (num + 0.5) * stepWidth,
+      stopInfo
+    });
+  }
+
+  busLocation() {
+    const { windowWidth, selectedStop } = this.state;
+    const stepWidth = windowWidth > 414 ? 66 * windowWidth / 375 : windowWidth > 375 ? 70 : windowWidth > 320 ? 66 : 55;
+    const min = moment(new Date()).format('mm');
+    const place = Math.floor(min / 1.5);
+    const stopInfo = {
+      time: selectedStop * 3 - moment(new Date()).format('mm'),
+      stops: selectedStop - Math.floor(place / 2),
+      road: (selectedStop * 2 - place) * (200 + Math.round(Math.random() * 50))
+    };
+    this.setState({
+      nowBus: place,
+      nowBusLeft: place * stepWidth / 2 + stepWidth * 0.38,
+      stopInfo
+    });
+    console.log('111');
+  }
+  // onPicScroll(e) {
+  // }
 
   randerLine() {
-    const { lineInfo, metroColor } = this.state;
+    const { selectStop } = this;
+    const { lineInfo, selectedStop, arrLeft, metroColor, nowBusLeft } = this.state;
     const { stops } = lineInfo;
-    const linePic = stops.map((e, i) => {
-      const metros = e.metro.map((j, k) => <View key={k}>{j}</View>);
-      return <View key={i} className="stop-one">
+    const lineStops = stops.map((e, i) => {
+      const metros = e.metro.map((j, k) => {
+        const bkgColor = metroColor[j];
+        return <View className="metro-block" style={{ backgroundColor: bkgColor }} key={k}>{j}</View>;
+      });
+      return <View key={i} className="stop-one" onClick={() => selectStop(i)}>
               <View className="road-arrow" />
               <View className="left-road" />
               <View className="stop-obj">
-                <View className="road-stop" />
+                {
+                selectedStop == i
+                  ? <View className="road-circle" />
+                  : <View className="road-stop" />
+                }
                 <View className="stop-num">{i + 1}</View>
-                <View className="stop-name">{e.name}</View>
+                <View className={["stop-name", selectedStop == i ? 'red-text' : '']}>{e.name}</View>
                 {metros}
               </View>
               <View className="right-road" />
@@ -73,31 +160,63 @@ export default class Index extends Component {
     });
     return (
       <View className="all-stops">
-        {linePic}
+        {lineStops}
+        <View className="arrow" style={{ left: arrLeft + 'px' }} />
+        <View className="bus-pic" style={{ left: nowBusLeft + 'px' }} />
       </View>
     );
   }
 
   render() {
+    const { changeType } = this;
+    const { picLeft, lineInfo, lineId, nowStopPeople, stopInfo } = this.state;
     const linePic = this.randerLine();
     return (
       <View className="page-bkg">
         <View className="line-info">
-          <Text className="title">767</Text>
-          <Text className="line-detail">祁华路枢纽站 → 株洲路广中路</Text>
+          <Text className="title">{lineId}</Text>
+          <Text className="line-detail">{lineInfo.name}</Text>
           <View className="time-price">
-            <Text>首末班：05:30 - 22:30</Text>
+            <Text>首末班：{lineInfo.time}</Text>
             <Text>|</Text>
-            <Text>票价：2 元</Text>
+            <Text>票价：{lineInfo.price / 100} 元</Text>
           </View>
+          <Text className="change-type" onClick={changeType}>⇌ 返程</Text>
         </View>
         <View className="stop-info">
-          <View className="arrow" />
+          {/* <Text>站 </Text>
+          <Text>公里 </Text>
+          <Text>分钟 </Text> */}
+          <View className="info-aura">
+            {
+              stopInfo.time < -1
+                ? <View className="info-desc">起点预计发车 {moment(new Date()).add(1, 'hours').format('HH:00')}</View>
+                : stopInfo.time < 2
+                  ? stopInfo.time == 1
+                    ? <View className="bus-time">即将到站</View>
+                    : <View className="bus-time">已到站</View>
+                  : <View className="bus-time">
+                        <Text>约</Text>
+                        <Text className="time-num">{stopInfo.time}</Text>
+                        <Text>分钟</Text>
+                    </View>
+
+            }
+
+            { stopInfo.time > 0 && <Text className="info-desc">{stopInfo.stops}站 / {stopInfo.road < 1000 ? stopInfo.road + '米' : (stopInfo.road / 1000).toFixed(1) + '公里'}</Text>}
+          </View>
+          <View className="info-line" />
+          <View className="info-aura">
+            <Text className="info-desc">站台人数</Text>
+            <Text className="stop-people" style={{ color: nowStopPeople > 30 ? '#CC0000' : nowStopPeople > 10 ? '#F9E103' : '#009900' }}>{nowStopPeople}</Text>
+          </View>
         </View>
         <View className="pic-aura">
           <ScrollView
             scrollX
             scrollWithAnimation
+            // onScroll={onPicScroll}
+            scrollLeft={picLeft}
             >
             {linePic}
           </ScrollView>

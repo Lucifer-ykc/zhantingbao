@@ -2,11 +2,11 @@
   .line-info{
     background: #389cff;
     height: 156px;
-    width: 100%;
     color: #fff;
     padding:24px;
     display: flex;
     flex-direction: column;
+    position: relative;
     .title{
       font-size: 48px;
       line-height: 48px;
@@ -38,81 +38,169 @@
         }
       }
     }
+    .change-type{
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      height: 36px;
+      font-size: 24px;
+      line-height: 34px;
+      text-align: center;
+      width: 100px;
+      border: 1px solid #fff;
+    }
   }
   .stop-info{
     height: 240px;
     width: 702px;
     border-radius: 10px;
     background: #fff;
-    margin:24px;
-    position: relative;
+    margin:24px 24px 0;
+    // position: relative;
     box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.1);
-    .arrow{
-      background: #fff;
-      bottom: -10px;
-      left: 330px;
-      position: absolute;
-      height: 20px;
-      width: 20px;
-      transform: rotate(45deg);
-      box-shadow: 8px 8px 8px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .info-aura{
+      flex:1;
+      padding:30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 180px;
+      .bus-time{
+        color: #389cff;
+        font-size: 28px;
+        margin-bottom: 10px;
+        .time-num{
+          margin:0 15px;
+          font-size: 36px;
+          font-weight: bold;
+        }
+      }
+      .info-desc{
+        color:#999;
+        font-size: 26px;
+      }
+      .stop-people{
+        font-size: 40px;
+        // color: #D44032;
+        font-weight: bold;
+        margin-top: 10px;
+        &::after{
+          content: '人';
+          color: #999;
+          font-size: 30px;
+          margin-left: 10px;
+        }
+      }
+    }
+    .info-line{
+      width: 1px;
+      height: 120px;
+      background-color: #e8e8e8;
+      margin-top: 60px;
     }
   }
   .pic-aura{
-    background-color: #fff;
-    margin:0 24px;
+    // background-color: #fff;
+    margin:0 30px;
+    overflow: visible;
     .all-stops{
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
       align-items: flex-start;
-    }
-    .stop-one{
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: flex-start;
-      .left-road,
-      .right-road,
-      .road-arrow,
-      .road-stop{
-        height: 12px;
-        background-color: #6CB438;
+      position: relative;
+      padding-top: 60px;
+      .arrow{
+        background: #fff;
+        top: -9px;
+        // left: 330px;
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        transform: rotate(45deg);
+        box-shadow: 8px 8px 8px 0 rgba(0, 0, 0, 0.1);
       }
-      .left-road{
-        width: 50px;
-      }
-      .right-road{
-        width: 38px;
-      }
-      .road-arrow{
-        width: 12px;
-        background-size: 8px 12px;
+      .bus-pic{
+        width: 57px;
+        height: 32px;
+        position: absolute;
+        top: 35px;
+        left: 100px;
         background-repeat: no-repeat;
         background-position: center;
-        background-image: url("../../images/road_arrow.png");
+        background-image: url("../../images/bus.png");
+        background-size: 100%;
       }
-      .road-stop{
-
-        background-repeat: no-repeat;
-        background-position: center;
-        background-image: url("../../images/stop_dot.png");
-        background-size: 12px;
-        margin-bottom: 20px;
-      }
-      .stop-obj{
-        width: 32px;
-        flex-direction: column;
-        align-items: center;
-        .stop-num,.stop-name{
-          margin: 15px auto;
-          font-size: 32px;
-          line-height:32px;
-          text-align: center;
+      .stop-one{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .left-road,
+        .right-road,
+        .road-arrow,
+        .road-stop{
+          height: 12px;
+          background-color: #6CB438;
+          margin: 10px 0;
         }
-        .stop-name{
-          letter-spacing: 4px;
-          writing-mode: vertical-lr;
+        .left-road{
+          width: 50px;
+        }
+        .right-road{
+          width: 38px;
+        }
+        .road-arrow{
+          width: 12px;
+          background-size: 8px 12px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-image: url("../../images/road_arrow.png");
+        }
+        .road-stop{
+          background-repeat: no-repeat;
+          background-position: center;
+          background-image: url("../../images/stop_dot.png");
+          background-size: 12px;
+          margin-bottom: 20px;
+        }
+        .road-circle{
+          height: 32px;
+          width: 32px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-image: url("../../images/circle.png");
+          background-size: 100%;
+          margin:0 0 10px;
+        }
+        .stop-obj{
+          width: 32px;
+          flex-direction: column;
+          align-items: center;
+          .stop-num,.stop-name{
+            margin-bottom: 20px;
+            font-size: 32px;
+            line-height:32px;
+            text-align: center;
+          }
+          .stop-name{
+            letter-spacing: 4px;
+            writing-mode: vertical-lr;
+          }
+          .metro-block{
+            font-size: 24px;
+            color: #fff;
+            line-height: 28px;
+            text-align: center;
+            margin:10px 2px;
+            height: 28px;
+            width: 28px;
+          }
         }
       }
     }
@@ -122,5 +210,8 @@
   }
   .red{
     background-color: #D44032;
+  }
+  .red-text{
+    color: #E06452;
   }
 }
