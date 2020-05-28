@@ -71,9 +71,11 @@ export default class Index extends Component {
         });
       }
     });
-    this.busLocation();
+    this.getStopPeople();
+    // this.busLocation();
     this.intervalBus = setInterval(() => {
-      this.busLocation();
+      this.getStopPeople();
+      // this.busLocation();
     }, 30000);
   }
 
@@ -97,7 +99,7 @@ export default class Index extends Component {
   }
 
   selectStop=(num) => {
-    const { picLeft, windowWidth, nowBus } = this.state;
+    const { picLeft, windowWidth, nowBus, stopPeoples } = this.state;
     const stepWidth = windowWidth > 414 ? 66 * windowWidth / 375 : windowWidth > 375 ? 70 : windowWidth > 320 ? 66 : 55;
     const newLeft = picLeft == (num - 2) * stepWidth ? ((num - 2) * stepWidth - 1) : ((num - 2) * stepWidth);
     const stopInfo = {
@@ -105,7 +107,7 @@ export default class Index extends Component {
       stops: num - Math.floor(nowBus / 2),
       road: (num * 2 - nowBus) * (200 + Math.round(Math.random() * 50))
     };
-    const nowStopPeople = this.getStopPeople(num);
+    const nowStopPeople = stopPeoples[num];
     this.setState({
       selectedStop: num,
       picLeft: newLeft,
@@ -116,7 +118,7 @@ export default class Index extends Component {
   }
 
   busLocation() {
-    const { windowWidth, selectedStop } = this.state;
+    const { windowWidth, selectedStop, stopPeoples } = this.state;
     const stepWidth = windowWidth > 414 ? 66 * windowWidth / 375 : windowWidth > 375 ? 70 : windowWidth > 320 ? 66 : 55;
     const min = moment(new Date()).format('mm');
     const place = Math.floor(min / 1.5);
@@ -125,7 +127,7 @@ export default class Index extends Component {
       stops: selectedStop - Math.floor(place / 2),
       road: (selectedStop * 2 - place) * (200 + Math.round(Math.random() * 50))
     };
-    const nowStopPeople = this.getStopPeople(selectedStop);
+    const nowStopPeople = stopPeoples[selectedStop];
     this.setState({
       nowBus: place,
       nowBusLeft: place * stepWidth / 2 + stepWidth * 0.38,
@@ -134,11 +136,21 @@ export default class Index extends Component {
     });
   }
 
-  getStopPeople(stop) {
+  getStopPeople() {
     const { lineInfo } = this.state;
     const totalStop = lineInfo.stops.length;
-    return Math.round(Math.abs((45 + Math.random() * 10 - ((totalStop / 2 - stop) ** 2 / 2) * (0.7 + Math.random() * 0.6))));
+    const stopPeoples = [];
+    lineInfo.stops.forEach((e, i) => {
+      stopPeoples.push(Math.round(Math.abs((45 + Math.random() * 10 - ((totalStop / 2 - i) ** 2 / 2) * (0.7 + Math.random() * 0.6)))));
+    });
+    // return Math.round(Math.abs((45 + Math.random() * 10 - ((totalStop / 2 - i) ** 2 / 2) * (0.7 + Math.random() * 0.6))));
+    this.setState({
+      stopPeoples
+    }, () => {
+      this.busLocation();
+    });
   }
+
   // onPicScroll(e) {
   // }
 
