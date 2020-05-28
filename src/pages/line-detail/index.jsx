@@ -213,9 +213,9 @@ export default class Index extends Component {
               stopInfo.time < -1
                 ? <View className="info-desc">起点预计发车 {moment(new Date()).add(1, 'hours').format('HH:00')}</View>
                 : stopInfo.time < 2
-                  ? stopInfo.time == 1
-                    ? <View className="bus-time">即将到站</View>
-                    : <View className="bus-time">已到站</View>
+                  ? stopInfo.time < 1
+                    ? <View className="bus-time">已到站</View>
+                    : <View className="bus-time">即将到站</View>
                   : <View className="bus-time">
                         <Text>约</Text>
                         <Text className="time-num">{stopInfo.time}</Text>
