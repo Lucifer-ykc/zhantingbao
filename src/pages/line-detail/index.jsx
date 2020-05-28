@@ -74,7 +74,7 @@ export default class Index extends Component {
     this.busLocation();
     this.intervalBus = setInterval(() => {
       this.busLocation();
-    }, 60000);
+    }, 30000);
   }
 
   componentDidHide() {
@@ -105,11 +105,13 @@ export default class Index extends Component {
       stops: num - Math.floor(nowBus / 2),
       road: (num * 2 - nowBus) * (200 + Math.round(Math.random() * 50))
     };
+    const nowStopPeople = this.getStopPeople(num);
     this.setState({
       selectedStop: num,
       picLeft: newLeft,
       arrLeft: (num + 0.5) * stepWidth,
-      stopInfo
+      stopInfo,
+      nowStopPeople
     });
   }
 
@@ -123,12 +125,19 @@ export default class Index extends Component {
       stops: selectedStop - Math.floor(place / 2),
       road: (selectedStop * 2 - place) * (200 + Math.round(Math.random() * 50))
     };
+    const nowStopPeople = this.getStopPeople(selectedStop);
     this.setState({
       nowBus: place,
       nowBusLeft: place * stepWidth / 2 + stepWidth * 0.38,
-      stopInfo
+      stopInfo,
+      nowStopPeople
     });
-    console.log('111');
+  }
+
+  getStopPeople(stop) {
+    const { lineInfo } = this.state;
+    const totalStop = lineInfo.stops.length;
+    return Math.round(Math.abs((45 + Math.random() * 10 - ((totalStop / 2 - stop) ** 2 / 2) * (0.7 + Math.random() * 0.6))));
   }
   // onPicScroll(e) {
   // }
@@ -200,9 +209,7 @@ export default class Index extends Component {
                         <Text className="time-num">{stopInfo.time}</Text>
                         <Text>分钟</Text>
                     </View>
-
             }
-
             { stopInfo.time > 0 && <Text className="info-desc">{stopInfo.stops}站 / {stopInfo.road < 1000 ? stopInfo.road + '米' : (stopInfo.road / 1000).toFixed(1) + '公里'}</Text>}
           </View>
           <View className="info-line" />
